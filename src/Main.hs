@@ -14,6 +14,10 @@ data Expr a where
 deriving instance Show (Expr a)
 deriving instance Eq a => Eq (Expr a)
 
+instance Functor Expr where
+    fmap f (Lam v exp) = Lam v (fmap f exp)
+    fmap f (App d e) = App (fmap f d) (fmap f e)
+    fmap f (Var v) = Var v
 
 subst :: Expr a -> Text -> Expr a -> Expr a
 subst (Lam b exp) v arg
